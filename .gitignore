@@ -1,0 +1,4 @@
+tools/cloudflared.exe
+artifacts/cloudflared*.log
+artifacts/cloudflared.pid
+artifacts/public-tunnel.png

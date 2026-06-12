@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>易搜王 - 香港美容儀器交易所</title>
+    <meta
+      name="description"
+      content="易搜王是香港首選的二手醫美儀器交易平台，提供激光、射頻、超聲波等各類美容儀器的買賣服務。"
+    />
+    <script>
+      (function (location) {
+        var appRoots = {
+          listings: true,
+          listing: true,
+          dashboard: true,
+          about: true,
+          contact: true,
+          admin: true,
+        };
+        if (location.search[1] === "/") {
+          var decoded = location.search
+            .slice(1)
+            .split("&")
+            .map(function (part) {
+              return part.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, location.pathname.slice(0, -1) + decoded + location.hash);
+        }
+        var segments = window.location.pathname.split("/").filter(Boolean);
+        var baseHref = segments.length && !appRoots[segments[0]] ? "/" + segments[0] + "/" : "/";
+        var base = document.createElement("base");
+        base.href = baseHref;
+        document.head.appendChild(base);
+      })(window.location);
+    </script>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="vendor/react.production.min.js"></script>
+    <script src="vendor/react-dom.production.min.js"></script>
+    <script src="vendor/htm.umd.js"></script>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

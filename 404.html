@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>易搜王 - 正在返回網站</title>
+    <script>
+      (function (location) {
+        var appRoots = {
+          listings: true,
+          listing: true,
+          dashboard: true,
+          about: true,
+          contact: true,
+          admin: true,
+        };
+        var segments = location.pathname.split("/").filter(Boolean);
+        var keep = segments.length && !appRoots[segments[0]] ? 1 : 0;
+        var base = location.pathname.split("/").slice(0, 1 + keep).join("/");
+        var route = "/" + segments.slice(keep).join("/");
+        if (route === "/") route = "/";
+        location.replace(
+          location.protocol +
+            "//" +
+            location.hostname +
+            (location.port ? ":" + location.port : "") +
+            base +
+            "/?" +
+            route.replace(/&/g, "~and~") +
+            (location.search ? "&" + location.search.slice(1).replace(/&/g, "~and~") : "") +
+            location.hash,
+        );
+      })(window.location);
+    </script>
+  </head>
+  <body></body>
+</html>

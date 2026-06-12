@@ -1,0 +1,21 @@
+{
+  "name": "yisouwang-professional-static",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch:seed": "node scripts/fetch-seed.mjs",
+    "dev": "node scripts/dev-server.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "export:github": "node scripts/export-github.mjs",
+    "verify:github": "node scripts/verify-github-export.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {}
+}
