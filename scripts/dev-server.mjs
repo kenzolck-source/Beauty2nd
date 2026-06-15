@@ -38,5 +38,5 @@ const server = createServer((req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`易搜王本地預覽：http://localhost:${port}`);
+  console.log(`HKMAEX 本地預覽：http://localhost:${port}`);
 });

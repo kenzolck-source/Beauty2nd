@@ -67,8 +67,8 @@ page.on("response", (response) => {
   const path = url.pathname;
   const expectedSpaFallback =
     path === `${basePath}/listings` ||
+    path === `${basePath}/listings/create` ||
     path.startsWith(`${basePath}/listing/`) ||
-    path.startsWith(`${basePath}/dashboard`) ||
     path.startsWith(`${basePath}/admin`) ||
     path === `${basePath}/about` ||
     path === `${basePath}/contact`;
@@ -76,7 +76,7 @@ page.on("response", (response) => {
 });
 
 await page.goto(`${origin}${basePath}/`, { waitUntil: "networkidle" });
-if (!(await page.locator("body").innerText()).includes("香港美容儀器交易所")) {
+if (!(await page.locator("body").innerText()).includes("香港醫美儀器交易所")) {
   errors.push("GitHub root route did not render homepage.");
 }
 
@@ -86,6 +86,9 @@ const listingsText = await page.locator("body").innerText();
 if (!listingsText.includes("全部儀器") || !listingsText.includes("62 件商品")) {
   errors.push("GitHub direct listings route did not render after 404 redirect.");
 }
+if (listingsText.includes("價格由低至高") || listingsText.includes("價格由高至低")) {
+  errors.push("GitHub listings route should not expose price sorting.");
+}
 if ((await page.locator('img[src*="/yisouwang-github/assets/imported/"]').count()) < 1) {
   errors.push("Listing images were not resolved under the GitHub Pages subpath.");
 }
@@ -94,6 +97,16 @@ await page.goto(`${origin}${basePath}/listing/62`, { waitUntil: "networkidle" })
 await page.waitForURL(`**${basePath}/listing/62`);
 const detailText = await page.locator("body").innerText();
 if (!detailText.includes("商品描述")) errors.push("GitHub direct detail route did not render after 404 redirect.");
+if (detailText.includes("HK$") || detailText.includes("購買年份") || detailText.includes("所在地區")) {
+  errors.push("GitHub detail route should not expose price, purchase year, or region.");
+}
+
+await page.goto(`${origin}${basePath}/listings/create`, { waitUntil: "networkidle" });
+await page.waitForURL(`**${basePath}/listings/create`);
+const sellText = await page.locator("body").innerText();
+if (!sellText.includes("WhatsApp 初步諮詢") || !sellText.includes("上架 HKMAEX")) {
+  errors.push("GitHub direct sell route did not render the SOP page.");
+}
 
 await page.setViewportSize({ width: 390, height: 844 });
 await page.goto(`${origin}${basePath}/listings`, { waitUntil: "networkidle" });

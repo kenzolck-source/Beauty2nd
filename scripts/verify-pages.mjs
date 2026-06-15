@@ -26,8 +26,7 @@ const routes = [
   ["/", "home"],
   ["/listings", "listings"],
   ["/listing/62", "detail"],
-  ["/listings/create", "create"],
-  ["/dashboard", "dashboard"],
+  ["/listings/create", "sell"],
   ["/admin", "admin"],
   ["/contact", "contact"],
 ];
@@ -52,12 +51,21 @@ const searchText = await page.locator(".market-results").innerText();
 if (!searchText.includes("Sofwave")) errors.push("Sofwave search result did not render.");
 
 await page.goto(`${base}/listing/62`, { waitUntil: "networkidle" });
-await page.getByText("聯絡賣家詢問").click();
-await page.locator('input[name="name"]').fill("測試用戶");
-await page.locator('input[name="phone"]').fill("9123 4567");
-await page.locator('textarea[name="message"]').fill("請問儀器狀況是否可以安排睇機？");
-await page.getByText("發送詢問").last().click();
-if (!(await page.getByText("詢問已發送").isVisible())) errors.push("Inquiry success message did not render.");
+const detailBody = await page.locator("body").innerText();
+if (detailBody.includes("HK$") || detailBody.includes("購買年份") || detailBody.includes("所在地區")) {
+  errors.push("Public detail page should not display price, purchase year, or region.");
+}
+const detailWhatsapp = await page.locator(".detail-actions a.whatsapp").getAttribute("href");
+if (!detailWhatsapp?.includes("wa.me/85291234567") || !detailWhatsapp.includes(encodeURIComponent("你好，我想查詢 HKMAEX 上的儀器"))) {
+  errors.push("Detail WhatsApp CTA does not include the expected phone number and prefilled message.");
+}
+
+await page.goto(`${base}/listings/create`, { waitUntil: "networkidle" });
+const sellText = await page.locator("body").innerText();
+for (const phrase of ["WhatsApp 初步諮詢", "專業上門檢查", "回收或代售方案", "清潔翻新處理", "檢測報告建立", "專業估價", "上架 HKMAEX"]) {
+  if (!sellText.includes(phrase)) errors.push(`Sell SOP missing: ${phrase}`);
+}
+if (sellText.includes("售價") || sellText.includes("提交刊登")) errors.push("Sell page should not show the old listing form.");
 
 await page.goto(`${base}/admin/listings`, { waitUntil: "networkidle" });
 const adminText = await page.locator(".admin-content").innerText();

@@ -1,6 +1,6 @@
-# 易搜王 GitHub Pages 預覽版
+# HKMAEX GitHub Pages 預覽版
 
-這個專案已整理成可直接放到 GitHub Pages 的靜態原型。
+這個專案已整理成可直接放到 GitHub Pages 的靜態原型，網站名稱為「香港醫美儀器交易所」，英文短名 `HKMAEX`。
 
 ## 發佈步驟
 
@@ -24,6 +24,7 @@ node scripts/export-github.mjs
 ## Demo 限制
 
 - 這是靜態前端原型，不是真後端。
-- 搜尋、收藏、刊登、詢問、後台操作使用瀏覽器 `localStorage` 模擬。
+- 公開流程以 WhatsApp 查詢及出售評估為主，沒有客人登入、收藏或站內詢問系統。
+- 聯絡查詢及隱藏內部後台 demo 使用瀏覽器 `localStorage` 模擬。
 - 商品資料與圖片是 demo seed data。
 - 正式商用前要替換示範電話、地址、電郵及任何佔位內容，並確認商品圖片與文案使用權。

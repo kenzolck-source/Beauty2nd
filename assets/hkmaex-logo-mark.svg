@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">HKMAEX logo mark</title>
+  <desc id="desc">Minimal line logo combining an exchange building, market bars, and a precise medical aesthetic beam.</desc>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 26h40" stroke="#D7A95A" stroke-width="2.6"/>
+    <path d="M16 45h32" stroke="#D7A95A" stroke-width="2.6"/>
+    <path d="M20 42V29M28 42V24M36 42V31M44 42V22" stroke="#F3D89A" stroke-width="2.8"/>
+    <path d="M14 22 32 12l18 10" stroke="#D7A95A" stroke-width="2.8"/>
+    <path d="M23 51h18" stroke="#19B386" stroke-width="2.8"/>
+    <path d="M23 51c5.5-6.4 11.6-9.8 18-10.5" stroke="#19B386" stroke-width="2.2"/>
+    <path d="M41 19c-4.2 7.2-7.2 14.9-8.8 23" stroke="#D7A95A" stroke-width="2.2"/>
+  </g>
+</svg>
