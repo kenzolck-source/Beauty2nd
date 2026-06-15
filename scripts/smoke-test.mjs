@@ -9,6 +9,7 @@ const requiredFiles = [
   "src/main.js",
   "src/styles.css",
   "assets/hkmaex-logo-mark.svg",
+  "assets/hkmaex-logo-image2-clean.png",
   "assets/hero-ocean-dark-image2.png",
   "assets/inspection-premium-image2.png",
   "assets/valuation-premium-image2.png",
@@ -34,6 +35,7 @@ const app = await readFile("src/main.js", "utf8");
 for (const token of ["HKMAEX", "SellInstrumentPage", "AdminDashboard", "ContactPage", "filterListings", "BrandLogo", "BrandMark", "hero-ocean-dark-image2", "WhatsApp 初步諮詢"]) {
   if (!app.includes(token)) failures.push(`Missing app token ${token}`);
 }
+if (!app.includes("hkmaex-logo-image2-clean.png")) failures.push("Public app should use the selected IMAGE2 logo PNG.");
 if (app.includes("logo-v1_22c42557.png")) failures.push("App should use the redesigned SVG logo, not the old imported logo image.");
 if (app.includes("hkmaex-logo-image2.png")) failures.push("Public app source should not use the AI-generated PNG logo.");
 if (app.includes("易搜王")) failures.push("Public app source should not include the old brand name.");

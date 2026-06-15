@@ -20,7 +20,7 @@ const SITE_CONFIG = {
   address: "香港九龍旺角彌敦道XXX號XXX樓",
 };
 
-const conditions = ["全新", "九成新", "八成新", "七成新", "六成新以下"];
+const conditions = ["接近全新", "九成九新", "全新", "九成新", "八成新", "七成新", "六成新以下"];
 const contactTypes = ["一般查詢", "買賣儀器", "美容院頂讓", "其他"];
 
 function loadStored(key, fallback) {
@@ -172,17 +172,7 @@ function CategoryIcon({ icon }) {
 
 function BrandMark({ className = "" }) {
   return html`<span className=${classNames("brand-mark", className)} aria-hidden="true">
-    <svg viewBox="0 0 64 64" role="img">
-      <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 26h40" stroke="#D7A95A" strokeWidth="2.6" />
-        <path d="M16 45h32" stroke="#D7A95A" strokeWidth="2.6" />
-        <path d="M20 42V29M28 42V24M36 42V31M44 42V22" stroke="#F3D89A" strokeWidth="2.8" />
-        <path d="M14 22 32 12l18 10" stroke="#D7A95A" strokeWidth="2.8" />
-        <path d="M23 51h18" stroke="#19B386" strokeWidth="2.8" />
-        <path d="M23 51c5.5-6.4 11.6-9.8 18-10.5" stroke="#19B386" strokeWidth="2.2" />
-        <path d="M41 19c-4.2 7.2-7.2 14.9-8.8 23" stroke="#D7A95A" strokeWidth="2.2" />
-      </g>
-    </svg>
+    <img src=${assetUrl("/assets/hkmaex-logo-image2-clean.png")} alt="" loading="eager" />
   </span>`;
 }
 
@@ -306,11 +296,11 @@ function Footer({ categories }) {
   </footer>`;
 }
 
-function ListingCard({ listing, categories }) {
+function ListingCard({ listing, categories, showWhatsapp = true, showImageCondition = true }) {
   return html`<article className="listing-card">
     <${Link} href=${`/listing/${listing.id}`} className="listing-image">
       <img src=${assetUrl(listing.featuredImageUrl)} alt=${listing.title} loading="lazy" />
-      <span className="condition">${listing.condition}</span>
+      ${showImageCondition ? html`<span className="condition">${listing.condition}</span>` : ""}
       ${listing.status !== "active" ? html`<${StatusBadge} status=${listing.status} />` : ""}
     <//>
     <div className="listing-body">
@@ -323,7 +313,9 @@ function ListingCard({ listing, categories }) {
       <p className="listing-summary">${listing.description}</p>
       <div className="listing-assurance"><${Icon} name="shield" /> 原相片刊登 · 平台驗證資料</div>
       <div className="listing-bottom">
-        <a className="button whatsapp full" href=${whatsappUrl(listingInquiryMessage(listing))} target="_blank" rel="noreferrer"><${Icon} name="phone" /> WhatsApp 查詢</a>
+        ${showWhatsapp
+          ? html`<a className="button whatsapp full" href=${whatsappUrl(listingInquiryMessage(listing))} target="_blank" rel="noreferrer"><${Icon} name="phone" /> WhatsApp 查詢</a>`
+          : html`<${Link} className="button ghost full" href=${`/listing/${listing.id}`}>查看詳情<//>`}
       </div>
     </div>
   </article>`;
@@ -390,6 +382,8 @@ function HomePage({ categories, listings }) {
               key=${listing.id}
               listing=${listing}
               categories=${categories}
+              showWhatsapp=${false}
+              showImageCondition=${false}
             />`,
         )}
       </div>
@@ -599,7 +593,7 @@ function ListingDetail({ id, categories, listings }) {
           <span>${listing.viewCount} 次瀏覽</span>
         </div>
         <h1>${listing.title}</h1>
-        <div className="detail-callout"><${Icon} name="shield" /> 平台整理資料 · 價格及交收由 WhatsApp 專人跟進</div>
+        <div className="detail-callout"><${Icon} name="shield" /> 本儀器已由持專業認可牌照的工程人員完成檢查、清潔翻新及基本功能測試，資料清晰可靠；價格及交收由 WhatsApp 專人跟進。</div>
         <dl className="spec-list">
           <div><dt>品牌</dt><dd>${listing.brand}</dd></div>
           <div><dt>型號</dt><dd>${listing.model}</dd></div>

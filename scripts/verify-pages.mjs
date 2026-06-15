@@ -46,14 +46,29 @@ for (const [path, name] of [["/", "mobile-home"], ["/listings", "mobile-listings
 
 await page.setViewportSize({ width: 1440, height: 980 });
 
+await page.goto(`${base}/`, { waitUntil: "networkidle" });
+const homeCardWhatsappCount = await page.locator(".section .listing-grid .listing-bottom a.whatsapp").count();
+if (homeCardWhatsappCount !== 0) errors.push("Homepage latest listing cards should not show WhatsApp CTAs.");
+const homeCardImageConditionCount = await page.locator(".section .listing-grid .listing-image .condition").count();
+if (homeCardImageConditionCount !== 0) errors.push("Homepage latest listing card images should not show top-left condition tags.");
+const homeDetailLinks = await page.locator(".section .listing-grid .listing-bottom a").allTextContents();
+if (!homeDetailLinks.some((text) => text.includes("查看詳情"))) errors.push("Homepage latest listing cards should guide users to detail pages.");
+
 await page.goto(`${base}/listings?search=Sofwave`, { waitUntil: "networkidle" });
 const searchText = await page.locator(".market-results").innerText();
 if (!searchText.includes("Sofwave")) errors.push("Sofwave search result did not render.");
+const conditionOptions = await page.locator(".filters select").allTextContents();
+if (!conditionOptions.join(" ").includes("接近全新") || !conditionOptions.join(" ").includes("九成九新")) {
+  errors.push("Condition filter should include 接近全新 and 九成九新.");
+}
 
 await page.goto(`${base}/listing/62`, { waitUntil: "networkidle" });
 const detailBody = await page.locator("body").innerText();
 if (detailBody.includes("HK$") || detailBody.includes("購買年份") || detailBody.includes("所在地區")) {
   errors.push("Public detail page should not display price, purchase year, or region.");
+}
+if (!detailBody.includes("持專業認可牌照的工程人員完成檢查、清潔翻新及基本功能測試")) {
+  errors.push("Detail assurance sentence did not render.");
 }
 const detailWhatsapp = await page.locator(".detail-actions a.whatsapp").getAttribute("href");
 if (!detailWhatsapp?.includes("wa.me/85291234567") || !detailWhatsapp.includes(encodeURIComponent("你好，我想查詢 HKMAEX 上的儀器"))) {
